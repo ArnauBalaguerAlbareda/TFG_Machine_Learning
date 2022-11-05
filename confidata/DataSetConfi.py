@@ -4,8 +4,7 @@ import numpy as np
 
 
 def configuration(data):
-    # print("hola")
-
+    
     rang = np.arange(76*76)
     df = pd.DataFrame(columns=rang)
     res = pd.read_csv("./data/demographics.csv")

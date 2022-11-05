@@ -1,19 +1,22 @@
-import pandas as pd
-import numpy as np
+# import pandas as pd
+# import numpy as np
 from confidata.DataSetConfi import *
 from datetime import datetime
 import sys
+from datapreparation.datapreparation import *
 
 
 def main():
-    t_inicio  = datetime.now()
+    # t_inicio  = datetime.now()
 
-    configuration("RS")
+    # configuration("RS")
 
-    t_final = datetime.now()
-    time = t_final - t_inicio
-    seconds = time.seconds
-    print(str(seconds) + "s")
+    # t_final = datetime.now()
+    # time = t_final - t_inicio
+    # seconds = time.seconds
+    # print(str(seconds) + "s")
+    datapreparation("Hola")
+
 
 
 if __name__ == '__main__':
@@ -25,3 +28,4 @@ if __name__ == '__main__':
 #  n:Nodo - 1
 #  Inice : n*76 --> n*76+75
 # }
+
