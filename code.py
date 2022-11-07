@@ -15,17 +15,17 @@ def main():
     # time = t_final - t_inicio
     # seconds = time.seconds
     # print(str(seconds) + "s")
-    datapreparation("Hola")
+    datapreparation('FA')
 
 
 
 if __name__ == '__main__':
-    sys.exit(main()) 
+    sys.exit(main())
 
 
 
 #{
 #  n:Nodo - 1
-#  Inice : n*76 --> n*76+75
+#  Inice : n*76 --> n*76+n
 # }
 
