@@ -7,14 +7,14 @@ from datapreparation.datapreparation import *
 
 
 def main():
-    # t_inicio  = datetime.now()
+    t_inicio  = datetime.now()
 
-    # configuration("RS")
+    configuration("FA")
 
-    # t_final = datetime.now()
-    # time = t_final - t_inicio
-    # seconds = time.seconds
-    # print(str(seconds) + "s")
+    t_final = datetime.now()
+    time = t_final - t_inicio
+    seconds = time.seconds
+    print(str(seconds) + "s")
     datapreparation('FA')
 
 
