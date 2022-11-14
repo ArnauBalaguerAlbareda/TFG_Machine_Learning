@@ -7,15 +7,18 @@ from datapreparation.datapreparation import *
 
 
 def main():
-    t_inicio  = datetime.now()
 
-    configuration("FA")
+    data = 'GM'
+    # t_inicio  = datetime.now()
 
-    t_final = datetime.now()
-    time = t_final - t_inicio
-    seconds = time.seconds
-    print(str(seconds) + "s")
-    datapreparation('FA')
+    # configuration(data)
+
+    # t_final = datetime.now()
+    # time = t_final - t_inicio
+    # seconds = time.seconds
+    # print(str(seconds) + "s")
+    
+    datapreparation(data)
 
 
 

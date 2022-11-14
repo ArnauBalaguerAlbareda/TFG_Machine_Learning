@@ -31,9 +31,9 @@ def configuration(data):
         df.loc[str(i)] = row
     
     df["mstype"] = list(res["mstype"])
-    df.to_csv(data + '.csv')
-    df_SEM.to_csv(data +'_SEM' + '.csv')
-    df_EM.to_csv(data +'_EM' + '.csv')
+    df.to_csv("./data/"+ data + "/" + data + ".csv")
+    df_SEM.to_csv("./data/"+ data + "/" + data +'_SEM' + ".csv")
+    df_EM.to_csv("./data/"+ data + "/" + data +'_EM' + ".csv")
 
     print(df)
     print("--")
