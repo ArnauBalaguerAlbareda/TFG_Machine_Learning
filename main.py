@@ -1,8 +1,9 @@
-import pandas as pd
-import numpy as np
+# import pandas as pd
+# import numpy as np
 from confidata.DataSetConfi import *
 from datetime import datetime
 import sys
+from datapreparation.datapreparation import *
 
 
 def main():
@@ -14,15 +15,18 @@ def main():
     time = t_final - t_inicio
     seconds = time.seconds
     print(str(seconds) + "s")
+    datapreparation('FA')
+
 
 
 
 if __name__ == '__main__':
-    sys.exit(main()) 
+    sys.exit(main())
 
 
 
 #{
 #  n:Nodo - 1
-#  Inice : n*76 --> n*76+75
+#  Inice : n*76 --> n*76+n
 # }
+
