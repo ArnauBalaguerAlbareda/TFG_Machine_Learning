@@ -8,7 +8,7 @@ from datapreparation.datapreparation import *
 
 def main():
 
-    data = 'GM'
+    data = 'FA'
     # t_inicio  = datetime.now()
 
     # configuration(data)
