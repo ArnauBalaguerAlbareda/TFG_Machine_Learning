@@ -17,7 +17,7 @@ def configuration(data):
 
     for i in range(143):
 
-        m = pd.read_csv("./data/"+ data + "/" + file(i) + ".csv",names=rang)
+        m = pd.read_csv("./data/"+ data + "/" + file(i) + ".csv",names=np.arange(76))
         row = []
         for y in range(76):
             row.extend(list(m[y]))
