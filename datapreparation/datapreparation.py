@@ -4,8 +4,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 import seaborn as sns
-from scipy import stats
 import pingouin as pg
+import math
+
 
 
 
@@ -20,66 +21,83 @@ def datapreparation(nameMatrix):
 
     print(df)
     
-    # print ('Total fields for each entry:', df.shape [ 1 ])
-    # print ('Total de entradas:', df.shape [ 0 ])
-    # print ('---------------------------------')
+    print ('Total fields for each entry:', df.shape [ 1 ])
+    print ('Total de entradas:', df.shape [ 0 ])
+    print ('---------------------------------')
 
-    # print('Empty values:', df.isna().sum().sum())
-    # print ('---------------------------------')
+    print('Empty values:', df.isna().sum().sum())
+    print ('---------------------------------')
 
-    # df.info()
-    # print ('---------------------------------')
+    df.info()
+    print ('---------------------------------')
 
-    # print(df.describe())
+    print(df.describe())
 
-    # print ('---------------------------------')
+    print ('---------------------------------')
     
-    # sns.countplot(x = 'mstype',data=df)
-    # df['mstype'].value_counts()
-    # plt.show()
+    sns.countplot(x = 'mstype',data=df)
+    df['mstype'].value_counts()
+    plt.show()
 
-    # df [[ '1','2','3']] . hist ( figsize = ( 10 , 5 ))
-    # plt.show()
+    df [[ '1','2','3']] . hist ( figsize = ( 10 , 5 ))
+    plt.show()
 
-    # print ('Standard Deviation:')
-    # df_D = pd.DataFrame()
-    # df_D["EM"] = list(df_EM.std(numeric_only=True))
-    # df_D["SEM"] = list(df_SEM.std(numeric_only=True))
-    # diferencia = [e1 - e2 for e1, e2 in zip(df_D["EM"],df_D["SEM"])]
-    # df_D["Dif"] = diferencia
-    # print(df_D)
-    # df_D.to_excel("./data/"+ maxmatrix + "/" + maxmatrix + '_StandardDeviation.xlsx')
-    # plt.plot(rang2, df_D["SEM"], 'b-', label='Australia')
-    # plt.plot(rang2, df_D["EM"], 'g-', label='New Zealand')
-    # plt.show()
+    print ('Standard Deviation:')
+    df_D = pd.DataFrame()
+    df_D["EM"] = list(df_EM.std(numeric_only=True))
+    df_D["SEM"] = list(df_SEM.std(numeric_only=True))
+    diferencia = [e1 - e2 for e1, e2 in zip(df_D["EM"],df_D["SEM"])]
+    df_D["Dif"] = diferencia
+    print(df_D)
+    df_D.to_excel("./data/"+ nameMatrix + "/" + nameMatrix + '_StandardDeviation.xlsx')
+    plt.plot(rang2, df_D["SEM"], 'b-', label='Australia')
+    plt.plot(rang2, df_D["EM"], 'g-', label='New Zealand')
+    plt.show()
 
-    # print("correlation:")
-    # correlation = df.corr()
-    # correlation['mstype'].to_excel("./data/"+ maxmatrix + "/" + maxmatrix + '_correlation.xlsx')
-    # print(correlation['mstype'])
+    print("correlation:")
+    correlation = df.corr()
+    correlation['mstype'].to_excel("./data/"+ nameMatrix + "/" + nameMatrix + '_correlation.xlsx')
+    print(correlation['mstype'])
 
-    # winner = df.corr()['mstype'].to_frame().T
-    # plt.subplots(figsize=(20, 1))
-    # sns.heatmap(winner,center = 0)
-    # plt.show()
+    winner = df.corr()['mstype'].to_frame().T
+    plt.subplots(figsize=(20, 1))
+    sns.heatmap(winner,center = 0)
+    plt.show()
 
-    # ll=[]
-    # for i in range(76): ll.append(0)
-    # for i in range(76*76):
-    #     if np.isnan(correlation['mstype'][i]) : ll[i//76]+=1
+    correlation_list=[]
+    for i in range(76): correlation_list.append(0)
+    for i in range(76*76):
+        if np.isnan(correlation['mstype'][i]) : correlation_list[i//76]+=1
 
-    # print (ll)
+    print (correlation_list)
 
     print("Removal of useless columns:")
     df = df.drop(
         df.iloc[:,2888:5777].columns,axis=1
     )
-    # df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_1/2' + ".csv")
+    df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_1/2' + ".csv")
     print(df)
 
     print("t Student: ")
-    
-        
+    pval_list = []
+
+    for i in range(1,2887):
+        a = df.loc[df.mstype == 0, str(i)]
+        b = df.loc[df.mstype == -1, str(i)]
+        res = "{0:.6f}".format(pg.ttest(x=a, y=b, alternative='two-sided', correction=False)['p-val']['T-test'])
+        if (res == 'nan'): pval_list.append(math.nan)
+        else: pval_list.append("{0:.6f}".format(pg.ttest(x=a, y=b, alternative='two-sided', correction=False)['p-val']['T-test']))
+
+    i = np.arange(1,2887)    
+    df_pval = pd.DataFrame()
+    df_pval["i"] = i
+    df_pval["pval"] = pval_list
+    df_pval = df_pval[df_pval['pval'].notna()]
+
+    print(df_pval)
+    df_pval = df_pval.sort_values('pval',ascending=False)
+    print(df_pval)
+    df_pval.to_excel("./data/"+ nameMatrix + "/" + nameMatrix + '_df_pval.xlsx')
 
 
 

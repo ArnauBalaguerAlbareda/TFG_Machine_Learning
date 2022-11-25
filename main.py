@@ -8,10 +8,10 @@ from datapreparation.datapreparation import *
 
 def main():
 
-    data = 'FA'
+    data = 'RS'
     # t_inicio  = datetime.now()
 
-    configuration(data)
+    # configuration(data)
 
     # t_final = datetime.now()
     # time = t_final - t_inicio
