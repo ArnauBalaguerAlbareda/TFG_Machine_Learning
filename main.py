@@ -17,7 +17,6 @@ def main():
     # time = t_final - t_inicio
     # seconds = time.seconds
     # print(str(seconds) + "s")
-    
     datapreparation(data)
 
 
