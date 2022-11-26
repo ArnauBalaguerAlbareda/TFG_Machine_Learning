@@ -8,8 +8,7 @@ import pingouin as pg
 import math
 
 from sklearn.preprocessing import StandardScaler
-
-
+from sklearn.decomposition import PCA
 
 
 def datapreparation(nameMatrix):
@@ -79,7 +78,7 @@ def datapreparation(nameMatrix):
     # df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_1/2' + ".csv")
     print(df)
 
-    # print("t Student: ")
+    # print("---------------------- t Student ----------------------")
     # pval_list = []
     # for i in range(1,2887):
     #     a = df.loc[df.mstype == 0, str(i)]
@@ -88,7 +87,7 @@ def datapreparation(nameMatrix):
     #     if (res == 'nan'): pval_list.append(math.nan)
     #     else: pval_list.append("{0:.6f}".format(pg.ttest(x=a, y=b, alternative='two-sided', correction=False)['p-val']['T-test']))
 
-    # i = np.arange(1,2887)    
+    # i = np.arange(1,2887)
     # df_pval = pd.DataFrame()
     # df_pval["i"] = i
     # df_pval["pval"] = pval_list
@@ -99,67 +98,30 @@ def datapreparation(nameMatrix):
     # print(df_pval)
     # df_pval.to_excel("./data/"+ nameMatrix + "/" + nameMatrix + '_df_pval.xlsx')
 
-    print("PCA")
+    print("---------------------- PCA ----------------------")
 
     X = df.iloc[:,1:2888].values
     y = df.iloc[:,2888].values
+    print(X)
+    print(y)
+    x_scaled = StandardScaler().fit_transform(X)
+    print(x_scaled)
+    pca = PCA()
+    pca_features = pca.fit_transform(x_scaled)
+ 
+    print('Shape before PCA: ', x_scaled.shape)
+    print('Shape after PCA: ', pca_features.shape)
+ 
+    pca_df = pd.DataFrame(
+        data=pca_features, 
+        columns=np.arange(143))
 
-    X_std = StandardScaler().fit_transform(X)
-    print('NumPy covariance matrix: \n%s' %np.cov(X_std.T))
-
-    # cov_mat = np.cov(X_std.T)
-
-    # eig_vals, eig_vecs = np.linalg.eig(cov_mat)
-
-    # print('Eigenvectors \n%s' %eig_vecs)
-    # print('\nEigenvalues \n%s' %eig_vals)
-
-    # #  Hacemos una lista de parejas (autovector, autovalor) 
-    # eig_pairs = [(np.abs(eig_vals[i]), eig_vecs[:,i]) for i in range(len(eig_vals))]
-
-    # # Ordenamos estas parejas den orden descendiente con la función sort
-    # eig_pairs.sort(key=lambda x: x[0], reverse=True)
-
-    # # Visualizamos la lista de autovalores en orden desdenciente
-    # print('Autovalores en orden descendiente:')
-    # for i in eig_pairs:
-    #     print(i[0])
-
-    # # A partir de los autovalores, calculamos la varianza explicada
-    # tot = sum(eig_vals)
-    # var_exp = [(i / tot)*100 for i in sorted(eig_vals, reverse=True)]
-    # cum_var_exp = np.cumsum(var_exp)
-
-    # # Representamos en un diagrama de barras la varianza explicada por cada autovalor, y la acumulada
-    # with plt.style.context('seaborn-pastel'):
-    #     plt.figure(figsize=(6, 4))
-
-    #     plt.bar(range(4), var_exp, alpha=0.5, align='center',
-    #             label='Varianza individual explicada', color='g')
-    #     plt.step(range(4), cum_var_exp, where='mid', linestyle='--', label='Varianza explicada acumulada')
-    #     plt.ylabel('Ratio de Varianza Explicada')
-    #     plt.xlabel('Componentes Principales')
-    #     plt.legend(loc='best')
-    #     plt.tight_layout()
-
-    # #Generamos la matríz a partir de los pares autovalor-autovector
-    # matrix_w = np.hstack((eig_pairs[0][1].reshape(4,1),
-    #                     eig_pairs[1][1].reshape(4,1)))
-
-    # print('Matriz W:\n', matrix_w)
-
-    # Y = X_std.dot(matrix_w)
-
-    # with plt.style.context('seaborn-whitegrid'):
-    #     plt.figure(figsize=(6, 4))
-    #     for lab, col in zip(('-1', '0'),
-    #                         ('magenta', 'cyan')):
-    #         plt.scatter(Y[y==lab, 0],
-    #                     Y[y==lab, 1],
-    #                     label=lab,
-    #                     c=col)
-    #     plt.xlabel('Componente Principal 1')
-    #     plt.ylabel('Componente Principal 2')
-    #     plt.legend(loc='lower center')
-    #     plt.tight_layout()
-    #     plt.show()
+    target_names = {
+        0:'Vs',
+        -1:'P'
+    }
+    
+    pca_df['mstype'] = y
+    pca_df['mstype'] = pca_df['mstype'].map(target_names)
+    
+    print(pca_df)

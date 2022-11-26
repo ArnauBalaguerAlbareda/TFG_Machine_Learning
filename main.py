@@ -8,7 +8,7 @@ from datapreparation.datapreparation import *
 
 def main():
 
-    data = 'RS'
+    data = 'FA'
     # t_inicio  = datetime.now()
 
     # configuration(data)
@@ -17,6 +17,7 @@ def main():
     # time = t_final - t_inicio
     # seconds = time.seconds
     # print(str(seconds) + "s")
+    
     datapreparation(data)
 
 
