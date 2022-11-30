@@ -4,11 +4,12 @@ from confidata.DataSetConfi import *
 from datetime import datetime
 import sys
 from datapreparation.datapreparation import *
+from classificationmodel.K_nn import *
 
 
 def main():
 
-    data = 'RS'
+    data = 'FA'
     # t_inicio  = datetime.now()
 
     # configuration(data)
@@ -18,7 +19,11 @@ def main():
     # seconds = time.seconds
     # print(str(seconds) + "s")
     
-    datapreparation(data)
+    # datapreparation(data)
+
+    K_NN("hola","PCA_funtion",data)
+
+
 
 
 
