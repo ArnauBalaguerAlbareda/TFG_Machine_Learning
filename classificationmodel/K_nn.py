@@ -2,15 +2,12 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
 
-
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import precision_score, make_scorer
 from sklearn.utils import resample
 from sklearn.metrics import accuracy_score,precision_score
-
 from mlxtend.evaluate import bootstrap_point632_score
-
 
 def K_NN(t_student,PCA_funtion,nameMatrix):
 
@@ -39,11 +36,11 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
         accuracy_t_b_ppp.append(np.mean((bootstrap_point632_score(Knn, x_t, y_t, method='.632+'))))
 
     # bootstrap ------------------------
-    n_size = int(len(t_student) * 0.50)
+    n_size = int(len(t_student) * 0.632)
     for n in range(1,30):
         accuracy_l = list()
         precision_l = list()
-        for i in range(10):
+        for i in range(7):
             train = resample(t_student.values , n_samples = n_size)
             test = np.array([x for x in t_student.values if x.tolist() not in train.tolist()])
             Knn = KNeighborsClassifier(n_neighbors=n)
@@ -54,7 +51,10 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
         accuracy_t_b.append(np.mean(accuracy_l))
         precision_t_b.append(np.mean(precision_l))
 
-
+    accuracy_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_t_c.csv')
+    precision_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_t_c.csv')
+    accuracy_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_t_b.csv')
+    precision_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_t_b.csv')
 
     plt.plot(range(1,30), accuracy_t_c, label='Accuracy cross')
     plt.plot(range(1,30), precision_t_c, label='Precision cross')
@@ -87,7 +87,7 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
     for n in range(1,30):
         accuracy_l = list()
         precision_l = list()
-        for i in range(10):
+        for i in range(7):
             train = resample(PCA_funtion.values , n_samples = n_size)
             test = np.array([x for x in PCA_funtion.values if x.tolist() not in train.tolist()])
             Knn = KNeighborsClassifier(n_neighbors=n)
@@ -98,6 +98,10 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
         accuracy_PCA_b.append(np.mean(accuracy_l))
         precision_PCA_b.append(np.mean(precision_l))
 
+    accuracy_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_PCA_c.csv')
+    precision_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_PCA_c.csv')
+    accuracy_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_PCA_b.csv')
+    precision_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_PCA_b.csv')
 
     plt.plot(range(1,30), accuracy_PCA_c, label='Accuracy cross')
     plt.plot(range(1,30), precision_PCA_c, label='Precision cross')
