@@ -51,10 +51,10 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
         accuracy_t_b.append(np.mean(accuracy_l))
         precision_t_b.append(np.mean(precision_l))
 
-    accuracy_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_t_c.csv')
-    precision_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_t_c.csv')
-    accuracy_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_t_b.csv')
-    precision_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_t_b.csv')
+    accuracy_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_accuracy_t_c.csv')
+    precision_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_precision_t_c.csv')
+    accuracy_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_accuracy_t_b.csv')
+    precision_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_precision_t_b.csv')
 
     plt.plot(range(1,30), accuracy_t_c, label='Accuracy cross')
     plt.plot(range(1,30), precision_t_c, label='Precision cross')
@@ -98,10 +98,10 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
         accuracy_PCA_b.append(np.mean(accuracy_l))
         precision_PCA_b.append(np.mean(precision_l))
 
-    accuracy_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_PCA_c.csv')
-    precision_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_PCA_c.csv')
-    accuracy_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'accuracy_PCA_b.csv')
-    precision_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'precision_PCA_b.csv')
+    accuracy_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_accuracy_PCA_c.csv')
+    precision_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_precision_PCA_c.csv')
+    accuracy_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_accuracy_PCA_b.csv')
+    precision_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'knn_precision_PCA_b.csv')
 
     plt.plot(range(1,30), accuracy_PCA_c, label='Accuracy cross')
     plt.plot(range(1,30), precision_PCA_c, label='Precision cross')

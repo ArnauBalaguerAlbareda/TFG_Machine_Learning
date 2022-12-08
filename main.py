@@ -5,6 +5,7 @@ from datetime import datetime
 import sys
 from datapreparation.datapreparation import *
 from classificationmodel.K_nn import *
+from classificationmodel.decisionTree import *
 
 
 def main():
@@ -21,7 +22,8 @@ def main():
     
     # datapreparation(data)
 
-    K_NN("hola","PCA_funtion",data)
+    # K_NN("hola","PCA_funtion",data)
+    # decisionTree("hola","PCA_funtion",data)
 
 
 
