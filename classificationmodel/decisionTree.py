@@ -44,10 +44,10 @@ def decisionTree(t_student,PCA_funtion,nameMatrix):
     accuracy_t_b = (np.mean(accuracy_l))
     precision_t_b = (np.mean(precision_l))
 
-    # accuracy_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
-    # precision_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_c.csv')
-    # accuracy_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_b.csv')
-    # precision_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_b.csv')
+    accuracy_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
+    precision_t_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_c.csv')
+    accuracy_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_b.csv')
+    precision_t_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_b.csv')
 
 
     Knn = DecisionTreeClassifier(criterion='entropy')
@@ -71,7 +71,7 @@ def decisionTree(t_student,PCA_funtion,nameMatrix):
     accuracy_PCA_b = (np.mean(accuracy_l))
     precision_PCA_b = (np.mean(precision_l))
 
-    # accuracy_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
-    # precision_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_c.csv')
-    # accuracy_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_b.csv')
-    # precision_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_b.csv')
+    accuracy_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
+    precision_PCA_c.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_c.csv')
+    accuracy_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_b.csv')
+    precision_PCA_b.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_b.csv')

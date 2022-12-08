@@ -29,11 +29,11 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
 
     # cross validation -----------------
     for n in range(100,300,25):
-        Knn = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
-        accuracy_t_c.append(cross_val_score(Knn, x_t, y_t, cv = 7, scoring='accuracy' ).mean())
+        RandomF = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
+        accuracy_t_c.append(cross_val_score(RandomF, x_t, y_t, cv = 7, scoring='accuracy' ).mean())
         precision = make_scorer(precision_score, pos_label=-1)
-        precision_t_c.append(cross_val_score(Knn, x_t, y_t, cv = 7, scoring=precision).mean())
-        accuracy_t_b_ppp.append(np.mean((bootstrap_point632_score(Knn, x_t, y_t, method='.632+'))))
+        precision_t_c.append(cross_val_score(RandomF, x_t, y_t, cv = 7, scoring=precision).mean())
+        accuracy_t_b_ppp.append(np.mean((bootstrap_point632_score(RandomF, x_t, y_t, method='.632+'))))
 
     # bootstrap ------------------------
     n_size = int(len(t_student) * 0.632)
@@ -43,9 +43,9 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
         for i in range(7):
             train = resample(t_student.values , n_samples = n_size)
             test = np.array([x for x in t_student.values if x.tolist() not in train.tolist()])
-            Knn = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
-            Knn.fit(train[:,:-1], train[:,-1])
-            predictions = Knn.predict(test[:,:-1])
+            RandomF = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
+            RandomF.fit(train[:,:-1], train[:,-1])
+            predictions = RandomF.predict(test[:,:-1])
             accuracy_l.append(accuracy_score(test[:,-1], predictions))
             precision_l.append(precision_score(test[:,-1], predictions,pos_label=-1))
         accuracy_t_b.append(np.mean(accuracy_l))
@@ -77,10 +77,10 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
 
     # cross validation -----------------
     for n in range(100,300,25):
-        Knn = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
-        accuracy_PCA_c.append(cross_val_score(Knn, x_PCA, y_PCA, cv = 5, scoring='accuracy').mean())
+        RandomF = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
+        accuracy_PCA_c.append(cross_val_score(RandomF, x_PCA, y_PCA, cv = 5, scoring='accuracy').mean())
         precision = make_scorer(precision_score, pos_label='MS')
-        precision_PCA_c.append(cross_val_score(Knn, x_PCA, y_PCA, cv = 5, scoring=precision).mean())
+        precision_PCA_c.append(cross_val_score(RandomF, x_PCA, y_PCA, cv = 5, scoring=precision).mean())
 
     # bootstrap ------------------------
     n_size = int(len(PCA_funtion) * 0.50)
@@ -90,9 +90,9 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
         for i in range(7):
             train = resample(PCA_funtion.values , n_samples = n_size)
             test = np.array([x for x in PCA_funtion.values if x.tolist() not in train.tolist()])
-            Knn = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
-            Knn.fit(train[:,:-1], train[:,-1])
-            predictions = Knn.predict(test[:,:-1])
+            RandomF = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
+            RandomF.fit(train[:,:-1], train[:,-1])
+            predictions = RandomF.predict(test[:,:-1])
             accuracy_l.append(accuracy_score(test[:,-1], predictions))
             precision_l.append(precision_score(test[:,-1], predictions,pos_label='MS'))
         accuracy_PCA_b.append(np.mean(accuracy_l))
