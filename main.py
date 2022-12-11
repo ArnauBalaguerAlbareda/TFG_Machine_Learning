@@ -6,6 +6,9 @@ import sys
 from datapreparation.datapreparation import *
 from classificationmodel.K_nn import *
 from classificationmodel.decisionTree import *
+from classificationmodel.randmoForest import *
+from classificationmodel.svm import *
+from classificationmodel.RN import *
 
 
 def main():
@@ -24,9 +27,9 @@ def main():
 
     # K_NN("hola","PCA_funtion",data)
     # decisionTree("hola","PCA_funtion",data)
-
-
-
+    # svm("hola","PCA_funtion",data)
+    # randomForest("hola","PCA_funtion",data)
+    RN("hola","PCA_funtion",data)
 
 
 
