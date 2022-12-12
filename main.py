@@ -25,11 +25,11 @@ def main():
     
     # datapreparation(data)
 
-    # K_NN("hola","PCA_funtion",data)
+    K_NN("hola","PCA_funtion",data)
     # decisionTree("hola","PCA_funtion",data)
     # svm("hola","PCA_funtion",data)
     # randomForest("hola","PCA_funtion",data)
-    RN("hola","PCA_funtion",data)
+    # RN("hola","PCA_funtion",data)
 
 
 

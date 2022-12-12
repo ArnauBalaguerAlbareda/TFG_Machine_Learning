@@ -20,7 +20,6 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
     x_PCA = PCA_funtion.iloc[:,1:PCA_funtion.shape[1]-1]
     y_PCA = PCA_funtion.iloc[:,PCA_funtion.shape[1]-1]
 
-
     accuracy_t_c = []
     precision_t_c = []
     accuracy_t_b = []
@@ -118,3 +117,5 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
     plt.xlabel('neighbor')
     plt.ylabel('%')
     plt.show()
+
+    # seve_model(x_t,y_t,t_student,'t','c',KNeighborsClassifier(n_neighbors=6),'knn',nameMatrix)
