@@ -27,7 +27,7 @@ def svm(t_student,PCA_funtion,nameMatrix):
     precision_t_b = []
 
     # cross validation -----------------
-    for n in range(100,1000,100):
+    for n in range(1,30,1):
         svm = SVC(gamma = "auto", kernel = "rbf", C = n)
         accuracy_t_c.append(cross_val_score(svm, x_t, y_t, cv = 7, scoring='accuracy' ).mean())
         precision = make_scorer(precision_score, pos_label=-1)
@@ -40,7 +40,7 @@ def svm(t_student,PCA_funtion,nameMatrix):
     n_size_SEM = int(len(t_student_SEM) * 0.632)
     n_size_EM = int(len(t_student_EM) * 0.632)
 
-    for n in range(100,1000,100):
+    for n in range(1,30,1):
         accuracy_l = list()
         precision_l = list()
         svm = SVC(gamma = "auto", kernel = "rbf", C = n)
@@ -62,15 +62,15 @@ def svm(t_student,PCA_funtion,nameMatrix):
     pd.DataFrame(accuracy_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_accuracy_t_b.csv')
     pd.DataFrame(precision_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_precision_t_b.csv')
 
-    plt.plot(range(100,1000,100), accuracy_t_c, label='Accuracy cross')
-    plt.plot(range(100,1000,100), precision_t_c, label='Precision cross')
-    plt.plot(range(100,1000,100), accuracy_t_b, label='Accuracy Bootstrap ')
-    plt.plot(range(100,1000,100), precision_t_b, label='Precision Bootstrap')
+    plt.plot(range(1,30,1), accuracy_t_c, label='Accuracy cross')
+    plt.plot(range(1,30,1), precision_t_c, label='Precision cross')
+    plt.plot(range(1,30,1), accuracy_t_b, label='Accuracy Bootstrap ')
+    plt.plot(range(1,30,1), precision_t_b, label='Precision Bootstrap')
 
     plt.legend()
     plt.grid()
-    plt.title('K-nn Classifier whit T Student')
-    plt.xlabel('neighbor')
+    plt.title('SVM Classifier whit T Student')
+    plt.xlabel('C')
     plt.ylabel('%')
     plt.show()
 
@@ -81,21 +81,29 @@ def svm(t_student,PCA_funtion,nameMatrix):
     precision_PCA_b = []
 
     # cross validation -----------------
-    for n in range(100,1000,100):
+    for n in range(1,30,1):
         svm = SVC(gamma = "auto", kernel = "rbf", C = n)
-        accuracy_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, cv = 5, scoring='accuracy').mean())
+        accuracy_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, cv = 7, scoring='accuracy').mean())
         precision = make_scorer(precision_score, pos_label='MS')
-        precision_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, cv = 5, scoring=precision).mean())
+        precision_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, cv = 7, scoring=precision).mean())
 
     # bootstrap ------------------------
-    n_size = int(len(PCA_funtion) * 0.50)
-    for n in range(100,1000,100):
+
+    PCA_SEM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'HV']
+    PCA_EM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'MS']
+
+    n_size_SEM = int(len(PCA_SEM) * 0.632)
+    n_size_EM = int(len(PCA_EM) * 0.632)
+
+    for n in range(1,30,1):
         accuracy_l = list()
         precision_l = list()
         svm = SVC(gamma = "auto", kernel = "rbf", C = n)
 
         for i in range(7):
-            train = resample(PCA_funtion.values , n_samples = n_size)
+            train_1 = resample(PCA_SEM.values , n_samples = n_size_SEM)
+            train_2 = resample(PCA_EM.values , n_samples = n_size_EM)
+            train = np.concatenate((train_1,train_2))
             test = np.array([x for x in PCA_funtion.values if x.tolist() not in train.tolist()])
             svm.fit(train[:,:-1], train[:,-1])
             predictions = svm.predict(test[:,:-1])
@@ -109,13 +117,13 @@ def svm(t_student,PCA_funtion,nameMatrix):
     pd.DataFrame(accuracy_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_accuracy_PCA_b.csv')
     pd.DataFrame(precision_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_precision_PCA_b.csv')
 
-    plt.plot(range(100,1000,100), accuracy_PCA_c, label='Accuracy cross')
-    plt.plot(range(100,1000,100), precision_PCA_c, label='Precision cross')
-    plt.plot(range(100,1000,100), accuracy_PCA_b, label='Accuracy Bootstrap')
-    plt.plot(range(100,1000,100), precision_PCA_b, label='Precision Bootstrap')
+    plt.plot(range(1,30,1), accuracy_PCA_c, label='Accuracy cross')
+    plt.plot(range(1,30,1), precision_PCA_c, label='Precision cross')
+    plt.plot(range(1,30,1), accuracy_PCA_b, label='Accuracy Bootstrap')
+    plt.plot(range(1,30,1), precision_PCA_b, label='Precision Bootstrap')
     plt.legend()
     plt.grid()
-    plt.title('K-nn Classifier whit T Student')
-    plt.xlabel('neighbor')
+    plt.title('SVM Classifier whit PCA')
+    plt.xlabel('C')
     plt.ylabel('%')
     plt.show()

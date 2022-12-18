@@ -13,43 +13,43 @@ from sklearn.decomposition import PCA
 def datapreparation(nameMatrix):
     
     df = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + ".csv")
-    print(df)
+    # print(df)
     
-    print ('Total fields for each entry:', df.shape [ 1 ])
-    print ('Total de entradas:', df.shape [ 0 ])
-    print ('---------------------------------')
+    # print ('Total fields for each entry:', df.shape [ 1 ])
+    # print ('Total de entradas:', df.shape [ 0 ])
+    # print ('---------------------------------')
 
-    print('Empty values:', df.isna().sum().sum())
-    print ('---------------------------------')
+    # print('Empty values:', df.isna().sum().sum())
+    # print ('---------------------------------')
 
-    df.info()
-    print ('---------------------------------')
+    # df.info()
+    # print ('---------------------------------')
 
-    print(df.describe())
+    # print(df.describe())
 
-    print ('---------------------------------')
+    # print ('---------------------------------')
     
-    print("---------------------- mstype distrivution ----------------------")
-    sns.countplot(x = 'mstype',data=df)
-    df['mstype'].value_counts()
-    plt.show()
+    # print("---------------------- mstype distrivution ----------------------")
+    # sns.countplot(x = 'mstype',data=df)
+    # df['mstype'].value_counts()
+    # plt.show()
 
-    print("---------------------- 1,2,3 distrivution ----------------------")
-    df [[ '1','2','3']] . hist ( figsize = ( 10 , 5 ))
-    plt.show()
+    # print("---------------------- 1,2,3 distrivution ----------------------")
+    # df [[ '1','2','3']] . hist ( figsize = ( 10 , 5 ))
+    # plt.show()
 
-    print("---------------------- Standard Deviation ----------------------")
-    standard_deviation(nameMatrix)
+    # print("---------------------- Standard Deviation ----------------------")
+    # standard_deviation(nameMatrix)
 
-    print("---------------------- Correlation ----------------------")
-    correlation(nameMatrix, df)
+    # print("---------------------- Correlation ----------------------")
+    # correlation(nameMatrix, df)
 
     print("---------------------- Remove useless columns ----------------------")
     df = remove_useless_columns(df)
     print(df)
 
-    print("---------------------- t Student ----------------------")
-    t_student(nameMatrix, df)
+    # print("---------------------- t Student ----------------------")
+    # t_student(nameMatrix, df)
 
     print("---------------------- PCA ----------------------")
     PCA_funtion(nameMatrix, df)

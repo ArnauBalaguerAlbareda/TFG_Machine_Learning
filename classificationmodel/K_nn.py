@@ -86,14 +86,19 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
         precision_PCA_c.append(cross_val_score(Knn, x_PCA, y_PCA, cv = 7, scoring=precision).mean())
 
     # bootstrap ------------------------
-    n_size = int(len(PCA_funtion) * 0.50)
+    PCA_SEM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'HV']
+    PCA_EM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'MS']
+    n_size_SEM = int(len(PCA_SEM) * 0.632)
+    n_size_EM = int(len(PCA_EM) * 0.632)
+
     for n in range(1,30):
         accuracy_l = list()
         precision_l = list()
         Knn = KNeighborsClassifier(n_neighbors=n)
-
         for i in range(7):
-            train = resample(PCA_funtion.values , n_samples = n_size)
+            train_1 = resample(PCA_SEM.values , n_samples = n_size_SEM)
+            train_2 = resample(PCA_EM.values , n_samples = n_size_EM)
+            train = np.concatenate((train_1,train_2))
             test = np.array([x for x in PCA_funtion.values if x.tolist() not in train.tolist()])
             Knn.fit(train[:,:-1], train[:,-1])
             predictions = Knn.predict(test[:,:-1])

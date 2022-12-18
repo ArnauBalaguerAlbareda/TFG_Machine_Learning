@@ -24,8 +24,7 @@ def RN(t_student,PCA_funtion,nameMatrix):
 
     param_distributions = {
         'hidden_layer_sizes': [(10), (10, 10), (20, 20)],
-        'alpha': np.logspace(-3, 3, 7),
-        'learning_rate_init': [0.001, 0.01, 0.1],
+        'alpha': np.logspace(-3, 3, 7)
     }
 
     grid_t = RandomizedSearchCV(
@@ -52,6 +51,10 @@ def RN(t_student,PCA_funtion,nameMatrix):
     modelo_t = grid_t.best_estimator_
     print(modelo_t)
 
+    seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix)
+    seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix)
+
+
     grid_PCA = RandomizedSearchCV(
         estimator  = MLPClassifier(solver = 'lbfgs', max_iter= 2000),
         param_distributions = param_distributions,
@@ -75,3 +78,6 @@ def RN(t_student,PCA_funtion,nameMatrix):
 
     modelo_PCA = grid_PCA.best_estimator_
     print(modelo_PCA)
+
+    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','c',modelo_PCA,'RN',nameMatrix)
+    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','b',modelo_PCA,'RN',nameMatrix)

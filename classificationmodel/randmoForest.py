@@ -27,17 +27,16 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
     accuracy_t_b = []
     precision_t_b = []
 
-    # cross validation -----------------
+    # # cross validation -----------------
     for n in range(100,300,25):
         radomForest = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
         accuracy_t_c.append(cross_val_score(radomForest, x_t, y_t, cv = 7, scoring='accuracy' ).mean())
         precision = make_scorer(precision_score, pos_label=-1)
         precision_t_c.append(cross_val_score(radomForest, x_t, y_t, cv = 7, scoring=precision).mean())
 
+    # # bootstrap ------------------------
     t_student_SEM = t_student.loc[t_student.loc[:,'mstype'] == 0]
     t_student_EM = t_student.loc[t_student.loc[:,'mstype'] == -1]
-
-    # bootstrap ------------------------
     n_size_SEM = int(len(t_student_SEM) * 0.632)
     n_size_EM = int(len(t_student_EM) * 0.632)    
     for n in range(100,300,25):
@@ -68,8 +67,8 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
 
     plt.legend()
     plt.grid()
-    plt.title('K-nn Classifier whit T Student')
-    plt.xlabel('neighbor')
+    plt.title('randomForest Classifier whit T Student')
+    plt.xlabel('n_estimators')
     plt.ylabel('%')
     plt.show()
 
@@ -87,22 +86,26 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
         precision_PCA_c.append(cross_val_score(radomForest, x_PCA, y_PCA, cv = 5, scoring=precision).mean())
 
     # bootstrap ------------------------
-    n_size = int(len(PCA_funtion) * 0.50)
+    PCA_SEM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'HV']
+    PCA__EM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'MS']
+    n_size_SEM = int(len(PCA_SEM) * 0.632)
+    n_size_EM = int(len(PCA__EM) * 0.632)    
     for n in range(100,300,25):
         accuracy_l = list()
         precision_l = list()
         radomForest = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
-
         for i in range(7):
-            train = resample(PCA_funtion.values , n_samples = n_size)
+            train_1 = resample(PCA_SEM.values , n_samples = n_size_SEM)
+            train_2 = resample(PCA__EM.values , n_samples = n_size_EM)
+            train = np.concatenate((train_1,train_2))
             test = np.array([x for x in PCA_funtion.values if x.tolist() not in train.tolist()])
-            radomForest = RandomForestClassifier(n_estimators=n, max_features=0.1, random_state=42)
             radomForest.fit(train[:,:-1], train[:,-1])
             predictions = radomForest.predict(test[:,:-1])
             accuracy_l.append(accuracy_score(test[:,-1], predictions))
             precision_l.append(precision_score(test[:,-1], predictions,pos_label='MS'))
         accuracy_PCA_b.append(np.mean(accuracy_l))
         precision_PCA_b.append(np.mean(precision_l))
+
 
     pd.DataFrame(accuracy_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'randomForest_accuracy_PCA_c.csv')
     pd.DataFrame(precision_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'randomForest_precision_PCA_c.csv')
@@ -115,7 +118,7 @@ def randomForest(t_student,PCA_funtion,nameMatrix):
     plt.plot(range(100,300,25), precision_PCA_b, label='Precision Bootstrap')
     plt.legend()
     plt.grid()
-    plt.title('K-nn Classifier whit T Student')
-    plt.xlabel('neighbor')
+    plt.title('randomForest Classifier whit PCA')
+    plt.xlabel('n_estimators')
     plt.ylabel('%')
     plt.show()

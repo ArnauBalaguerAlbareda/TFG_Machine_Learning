@@ -56,26 +56,32 @@ def decisionTree(t_student,PCA_funtion,nameMatrix):
 
     DecisionTree = DecisionTreeClassifier(criterion='entropy')
     accuracy_PCA_c = (cross_val_score(DecisionTree, x_PCA, y_PCA, cv = 7, scoring='accuracy' ).mean())
-    precision = make_scorer(precision_score, pos_label=-1)
+    precision = make_scorer(precision_score, pos_label='MS')
     precision_PCA_c = (cross_val_score(DecisionTree, x_PCA, y_PCA, cv = 7, scoring=precision).mean())
 
     # bootstrap ------------------------
-    n_size = int(len(t_student) * 0.632)
+    PCA_SEM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'HV']
+    PCA_EM = PCA_funtion.loc[PCA_funtion.loc[:,'mstype'] == 'MS']
+    n_size_SEM = int(len(PCA_SEM) * 0.632)
+    n_size_EM = int(len(PCA_EM) * 0.632)
     accuracy_l = list()
-    precision_l = list()    
+    precision_l = list()
+    DecisionTree = DecisionTreeClassifier(criterion='entropy')
+ 
     for i in range(7):
-        train = resample(t_student.values , n_samples = n_size)
-        test = np.array([x for x in t_student.values if x.tolist() not in train.tolist()])
-        DecisionTree = DecisionTreeClassifier(criterion='entropy')
+        train_1 = resample(PCA_SEM.values , n_samples = n_size_SEM)
+        train_2 = resample(PCA_EM.values , n_samples = n_size_EM)
+        train = np.concatenate((train_1,train_2))
+        test = np.array([x for x in PCA_funtion.values if x.tolist() not in train.tolist()])
         DecisionTree.fit(train[:,:-1], train[:,-1])
         predictions = DecisionTree.predict(test[:,:-1])
         accuracy_l.append(accuracy_score(test[:,-1], predictions))
-        precision_l.append(precision_score(test[:,-1], predictions,pos_label=-1))
+        precision_l.append(precision_score(test[:,-1], predictions,pos_label='MS'))
 
     accuracy_PCA_b = (np.mean(accuracy_l))
     precision_PCA_b = (np.mean(precision_l))
 
-    # pd.DataFrame(accuracy_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
+    pd.DataFrame(accuracy_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
     # pd.DataFrame(precision_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_c.csv')
     # pd.DataFrame(accuracy_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_b.csv')
     # pd.DataFrame(precision_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_b.csv')
