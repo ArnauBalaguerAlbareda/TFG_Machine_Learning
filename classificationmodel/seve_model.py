@@ -24,23 +24,18 @@ def seve_model(x,y,bd,t_bd,t_trin,model,name_model,nameMatrix):
 
         masks = []
         for fold in range(k):
-            # Generar una máscara booleana para los datos de test de este fold
             test_mask = np.zeros(n_samples, dtype=bool)
             test_mask[fold * fold_size : (fold + 1) * fold_size] = True
-            # Guardar la máscara para visualizarla después
             masks.append(test_mask)
-            # Crear los conjuntos de entrenamiento y test utilizando la máscara
             X_test, y_test = x[test_mask], y[test_mask]
             X_train, y_train = x[~test_mask], y[~test_mask]
-            # Ajustar el clasificador
             model.fit(X_train, y_train)
-            # Obtener el rendimiento y guardarlo
             predictions = model.predict(X_test)
             scores_a.append(model.score(X_test, y_test))
             scores_p.append(precision_score(y_test, predictions,pos_label=label))
         accuracy = np.mean(scores_a)
         precision = np.mean(scores_p)
-        # joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
+        joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
     else:
         accuracy_l = list()
         precision_l = list()
@@ -74,5 +69,4 @@ def seve_model(x,y,bd,t_bd,t_trin,model,name_model,nameMatrix):
         accuracy = np.mean(accuracy_l)
         precision = np.mean(precision_l)
 
-        # joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
-    print("hola")
+        joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')

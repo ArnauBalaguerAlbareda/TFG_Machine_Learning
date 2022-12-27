@@ -48,12 +48,6 @@ def decisionTree(t_student,PCA_funtion,nameMatrix):
     accuracy_t_b = (np.mean(accuracy_l))
     precision_t_b = (np.mean(precision_l))
 
-    # pd.DataFrame(accuracy_t_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
-    # pd.DataFrame(precision_t_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_c.csv')
-    # pd.DataFrame(accuracy_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_b.csv')
-    # pd.DataFrame(precision_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_b.csv')
-
-
     DecisionTree = DecisionTreeClassifier(criterion='entropy')
     accuracy_PCA_c = (cross_val_score(DecisionTree, x_PCA, y_PCA, cv = 7, scoring='accuracy' ).mean())
     precision = make_scorer(precision_score, pos_label='MS')
@@ -80,8 +74,3 @@ def decisionTree(t_student,PCA_funtion,nameMatrix):
 
     accuracy_PCA_b = (np.mean(accuracy_l))
     precision_PCA_b = (np.mean(precision_l))
-
-    pd.DataFrame(accuracy_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_c.csv')
-    # pd.DataFrame(precision_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_c.csv')
-    # pd.DataFrame(accuracy_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_accuracy_t_b.csv')
-    # pd.DataFrame(precision_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'Decision_precision_t_b.csv')

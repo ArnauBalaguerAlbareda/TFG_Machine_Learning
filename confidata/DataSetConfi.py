@@ -1,9 +1,11 @@
 from re import I
 import pandas as pd
 import numpy as np
+import networkx as nx
 
 
-def configuration(data):
+
+def configuration_matrix(data):
     
     rang = np.arange(76*76)
     df = pd.DataFrame(columns=rang)
@@ -42,6 +44,29 @@ def configuration(data):
     print(df_EM)
 
 
+def configuration_graf(data):
+    m = pd.read_csv("./data/"+ 'RS' + "/" + file(0) + ".csv",names=np.arange(76))
+    a = pd.read_csv("./data/"+ 'RS' + "/" + file(5) + ".csv",names=np.arange(76))
+
+    G = nx.from_numpy_matrix(m.to_numpy())
+    A = nx.from_numpy_matrix(a.to_numpy())
+    # nx.draw(b, with_labels=True)
+
+    # print(nx.dag_longest_path(G))
+    # print(nx.dag_longest_path(A))
+    # if(nx.dag_longest_path(G) == nx.dag_longest_path(A)): print ("true")
+
+# floyd_warshall
+# johnson
+# eigenvector_centrality_numpy
+
+# metricas:
+# 	degree
+# 	streng
+# 	bitwines
+# 	closenes
+
+# 	posra que no son dirigides
 
 def file(number):
     if(number<10):

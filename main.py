@@ -16,20 +16,21 @@ def main():
     data = 'RS'
     # t_inicio  = datetime.now()
 
-    # configuration(data)
+    # configuration_matrix(data)
+    configuration_graf(data)
 
     # t_final = datetime.now()
     # time = t_final - t_inicio
     # seconds = time.seconds
     # print(str(seconds) + "s")
     
-    # datapreparation(data)
+    # datapreparation_matrix(data)
 
     # K_NN("hola","PCA_funtion",data)
     # decisionTree("hola","PCA_funtion",data)
     # svm("hola","PCA_funtion",data)
     # randomForest("hola","PCA_funtion",data)
-    RN("hola","PCA_funtion",data)
+    # RN("hola","PCA_funtion",data)
 
 
 

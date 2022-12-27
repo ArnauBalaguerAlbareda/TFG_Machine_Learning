@@ -122,5 +122,3 @@ def K_NN(t_student,PCA_funtion,nameMatrix):
     plt.xlabel('neighbor')
     plt.ylabel('%')
     plt.show()
-
-    # seve_model(x_t,y_t,t_student,'t','c',KNeighborsClassifier(n_neighbors=6),'knn',nameMatrix)
