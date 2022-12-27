@@ -10,49 +10,50 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
 
-def datapreparation_matrix(nameMatrix):
+def datapreparation_matrix(nameMatrix,graf,meth):
     
-    df = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + ".csv")
-    print(df)
-    
-    print ('Total fields for each entry:', df.shape [ 1 ])
-    print ('Total de entradas:', df.shape [ 0 ])
-    print ('---------------------------------')
+    if(graf == False):
+        df = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + ".csv")
+        print(df)
+        
+        print ('Total fields for each entry:', df.shape [ 1 ])
+        print ('Total de entradas:', df.shape [ 0 ])
+        print ('---------------------------------')
 
-    print('Empty values:', df.isna().sum().sum())
-    print ('---------------------------------')
+        print('Empty values:', df.isna().sum().sum())
+        print ('---------------------------------')
 
-    df.info()
-    print ('---------------------------------')
+        df.info()
+        print ('---------------------------------')
 
-    print(df.describe())
+        print(df.describe())
 
-    print ('---------------------------------')
-    
-    print("---------------------- mstype distrivution ----------------------")
-    sns.countplot(x = 'mstype',data=df)
-    df['mstype'].value_counts()
-    plt.show()
+        print ('---------------------------------')
+        
+        print("---------------------- mstype distrivution ----------------------")
+        sns.countplot(x = 'mstype',data=df)
+        df['mstype'].value_counts()
+        plt.show()
 
-    print("---------------------- 1,2,3 distrivution ----------------------")
-    df [[ '1','2','3']] . hist ( figsize = ( 10 , 5 ))
-    plt.show()
+        print("---------------------- 1,2,3 distrivution ----------------------")
+        df [[ '1','2','3']] . hist ( figsize = ( 10 , 5 ))
+        plt.show()
 
-    print("---------------------- Standard Deviation ----------------------")
-    standard_deviation(nameMatrix)
+        print("---------------------- Standard Deviation ----------------------")
+        standard_deviation(nameMatrix)
 
-    print("---------------------- Correlation ----------------------")
-    correlation(nameMatrix, df)
+        print("---------------------- Correlation ----------------------")
+        correlation(nameMatrix, df)
 
-    print("---------------------- Remove useless columns ----------------------")
-    df = remove_useless_columns(df)
-    print(df)
+        print("---------------------- Remove useless columns ----------------------")
+        df = remove_useless_columns(df)
+        print(df)
 
     print("---------------------- t Student ----------------------")
-    t_student(nameMatrix, df)
+    t_student(nameMatrix, df, graf, meth)
 
     print("---------------------- PCA ----------------------")
-    PCA_funtion(nameMatrix, df)
+    PCA_funtion(nameMatrix, df, graf, meth)
 
 
 def standard_deviation(nameMatrix):
@@ -97,10 +98,13 @@ def remove_useless_columns(df):
     return df
 
 
-def t_student(nameMatrix, df):
+def t_student(nameMatrix, df, graf, meth):
     pval_list = []
     df_t = pd.DataFrame()
-    for i in range(0,2887):
+    if(graf == False):range_atributs = 2887 
+    else: range_atributs= 76
+
+    for i in range(0,range_atributs):
         a = df.loc[df.mstype == 0, str(i)]
         b = df.loc[df.mstype == -1, str(i)]
         res = "{0:.6f}".format(pg.ttest(x=a, y=b, alternative='two-sided', correction=False)['p-val']['T-test'])
@@ -113,35 +117,39 @@ def t_student(nameMatrix, df):
     print(df_t)
     df_pval = pd.DataFrame()
     df_pval["pval"] = pval_list
-    df_pval["id"] = np.arange(0,2887)
+    df_pval["id"] = np.arange(0,range_atributs)
     print(df_pval)
     df_pval = df_pval[df_pval['pval'].notna()]
     df_pval = df_pval.sort_values('pval')
     print(df_pval)
-
-    df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
-
-    print("--- 4r ---")
-    for i in range(0,4):
-        sns.boxplot(x = df['mstype'],
-            y = df[str(df_pval.iloc[i, 1])],
-            hue = df['mstype']
-        )
-        plt.show()
     
-    print("--- 4l ---")
-    for i in range(df_pval.shape[0]-4,df_pval.shape[0]):
-        sns.boxplot(x = df['mstype'],
-            y = df[str(df_pval.iloc[i, 1])],
-            hue = df['mstype']
-        )
-        plt.show()
+    if(graf == False):df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
+    else: df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ meth + '_t_student.csv')
+
+    # print("--- 4r ---")
+    # for i in range(0,4):
+    #     sns.boxplot(x = df['mstype'],
+    #         y = df[str(df_pval.iloc[i, 1])],
+    #         hue = df['mstype']
+    #     )
+    #     plt.show()
+    
+    # print("--- 4l ---")
+    # for i in range(df_pval.shape[0]-4,df_pval.shape[0]):
+    #     sns.boxplot(x = df['mstype'],
+    #         y = df[str(df_pval.iloc[i, 1])],
+    #         hue = df['mstype']
+    #     )
+    #     plt.show()
         
 
 
-def PCA_funtion(nameMatrix, df):
-    x = df.iloc[:,1:2888].values
-    y = df.iloc[:,2888].values
+def PCA_funtion(nameMatrix, df, graf, meth):
+    if(graf == False):range_atributs = 2887 
+    else: range_atributs= 76
+    
+    x = df.iloc[:,1:range_atributs].values
+    y = df.iloc[:,range_atributs].values
 
     pca = PCA().fit(x)
     n_c = np.cumsum(pca.explained_variance_ratio_)
@@ -177,4 +185,5 @@ def PCA_funtion(nameMatrix, df):
     pca_df['mstype'] = pca_df['mstype'].map(target_names)
     
     print(pca_df)
-    pca_df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
+    if(graf == False):pca_df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
+    else: pca_df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ meth +'_PCA' + ".csv")

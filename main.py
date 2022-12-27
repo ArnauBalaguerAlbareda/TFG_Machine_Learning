@@ -17,7 +17,7 @@ def main():
     # t_inicio  = datetime.now()
 
     # configuration_matrix(data)
-    configuration_graf(data)
+    configuration_graf(data,1)
 
     # t_final = datetime.now()
     # time = t_final - t_inicio
