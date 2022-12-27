@@ -48,6 +48,7 @@ def datapreparation_matrix(nameMatrix,graf,meth):
         print("---------------------- Remove useless columns ----------------------")
         df = remove_useless_columns(df)
         print(df)
+    else: df = pd.read_csv( "./data/"+ nameMatrix + "/" + nameMatrix + '_' + str(meth) + "_graph.csv")
 
     print("---------------------- t Student ----------------------")
     t_student(nameMatrix, df, graf, meth)
@@ -124,7 +125,7 @@ def t_student(nameMatrix, df, graf, meth):
     print(df_pval)
     
     if(graf == False):df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
-    else: df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ meth + '_t_student.csv')
+    else: df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) + '_t_student.csv')
 
     # print("--- 4r ---")
     # for i in range(0,4):
@@ -186,4 +187,4 @@ def PCA_funtion(nameMatrix, df, graf, meth):
     
     print(pca_df)
     if(graf == False):pca_df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
-    else: pca_df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ meth +'_PCA' + ".csv")
+    else: pca_df.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) +'_PCA' + ".csv")

@@ -24,7 +24,7 @@ def main():
     # seconds = time.seconds
     # print(str(seconds) + "s")
     
-    # datapreparation_matrix(data)
+    datapreparation_matrix(data,True,1)
 
     # K_NN("hola","PCA_funtion",data)
     # decisionTree("hola","PCA_funtion",data)
