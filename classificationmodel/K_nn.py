@@ -9,7 +9,7 @@ from sklearn.utils import resample
 from .seve_model import *
 
 
-def K_NN( t_student, PCA_funtion, nameMatrix, graf, meth):
+def K_NN(nameMatrix, graf, meth):
 
     if(graf == False):
         t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')

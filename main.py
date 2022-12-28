@@ -1,5 +1,3 @@
-# import pandas as pd
-# import numpy as np
 from confidata.DataSetConfi import *
 from datetime import datetime
 import sys
@@ -14,24 +12,36 @@ from classificationmodel.RN import *
 def main():
 
     data = 'RS'
-    # t_inicio  = datetime.now()
+    t_inicio  = datetime.now()
 
-    # configuration_matrix(data)
-    configuration_graf(data,1)
+    # Crate the max matrix
+    configuration_matrix(data)
+    for i in range(1,5):
+        configuration_graf(data,i)
 
-    # t_final = datetime.now()
-    # time = t_final - t_inicio
-    # seconds = time.seconds
-    # print(str(seconds) + "s")
+    t_final = datetime.now()
+    time = t_final - t_inicio
+    seconds = time.seconds
+    print(str(seconds) + "s")
     
-    # datapreparation_matrix(data,True,1)
+    #Descrip the data base and crate the t_studen & PCA matrics
+    datapreparation_matrix(data,False,0)
+    for i in range(1,5):
+        datapreparation_matrix(data,True,i)
 
-    # K_NN("t_student","PCA_funtion",data,True, 1)
-    # decisionTree("t_student","PCA_funtion",data, True, 1)
-    # svm("t_student","PCA_funtion",data,True, 1)    
-    # randomForest("t_student","PCA_funtion",data,True, 1)
-    # RN("t_student","PCA_funtion",data,True, 1)
+    #Entrenar modelos
+    K_NN("t_student","PCA_funtion",data,True, 1)
+    decisionTree("t_student","PCA_funtion",data, True, 1)
+    svm("t_student","PCA_funtion",data,True, 1)    
+    randomForest("t_student","PCA_funtion",data,True, 1)
+    RN("t_student","PCA_funtion",data,True, 1)
 
+    for i in range(1,5):
+        K_NN("t_student","PCA_funtion",data,True, i)
+        decisionTree("t_student","PCA_funtion",data, True, i)
+        svm("t_student","PCA_funtion",data,True, i)    
+        randomForest("t_student","PCA_funtion",data,True, i)
+        RN("t_student","PCA_funtion",data,True, i)
 
 
 if __name__ == '__main__':

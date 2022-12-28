@@ -9,7 +9,7 @@ from sklearn.utils import resample
 from sklearn.metrics import accuracy_score,precision_score
 from .seve_model import *
 
-def svm(t_student ,PCA_funtion , nameMatrix, graf, meth):
+def svm(nameMatrix, graf, meth):
     
     if(graf == False):
         t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')

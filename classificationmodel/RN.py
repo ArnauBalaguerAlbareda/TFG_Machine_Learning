@@ -11,7 +11,7 @@ import multiprocessing
 from sklearn.metrics import precision_score
 
 
-def RN(t_student,PCA_funtion,nameMatrix, graf, meth):
+def RN(nameMatrix, graf, meth):
 
     if(graf == False):
         t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
