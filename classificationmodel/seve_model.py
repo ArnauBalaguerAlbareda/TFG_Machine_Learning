@@ -8,7 +8,7 @@ from sklearn.utils import resample
 import joblib
 from sklearn.metrics import precision_score,accuracy_score
 
-def seve_model(x,y,bd,t_bd,t_trin,model,name_model,nameMatrix):
+def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, meth):
 
     if(t_bd == 't'):
         label = -1
@@ -35,7 +35,8 @@ def seve_model(x,y,bd,t_bd,t_trin,model,name_model,nameMatrix):
             scores_p.append(precision_score(y_test, predictions,pos_label=label))
         accuracy = np.mean(scores_a)
         precision = np.mean(scores_p)
-        joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
+        # if(graf == False):joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
+        # else: joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + "_" + str(meth) + '.pkl')
     else:
         accuracy_l = list()
         precision_l = list()
@@ -69,4 +70,5 @@ def seve_model(x,y,bd,t_bd,t_trin,model,name_model,nameMatrix):
         accuracy = np.mean(accuracy_l)
         precision = np.mean(precision_l)
 
-        joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
+        # if(graf == False):joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
+        # else: joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + "_" + str(meth) + '.pkl')

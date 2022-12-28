@@ -86,10 +86,6 @@ def configuration_graf(data,meth):
     df["mstype"] = list(res["mstype"])
     print(df)
     df.to_csv("./data/"+ data + "/" + data + '_' + str(meth) + "_graph.csv")
-    df_SEM.to_csv("./data/"+ data + "/" + data +'_SEM_' + str(meth) + "_graph.csv")
-    df_EM.to_csv("./data/"+ data + "/" + data +'_EM_' + str(meth) +"_graph.csv")
-
-
 
     # m = pd.read_csv("./data/"+ 'RS' + "/" + file(0) + ".csv",names=np.arange(76))
     # a = pd.read_csv("./data/"+ 'RS' + "/" + file(5) + ".csv",names=np.arange(76))

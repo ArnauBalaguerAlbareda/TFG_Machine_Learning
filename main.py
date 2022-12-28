@@ -24,13 +24,13 @@ def main():
     # seconds = time.seconds
     # print(str(seconds) + "s")
     
-    datapreparation_matrix(data,True,1)
+    # datapreparation_matrix(data,True,1)
 
-    # K_NN("hola","PCA_funtion",data)
-    # decisionTree("hola","PCA_funtion",data)
-    # svm("hola","PCA_funtion",data)
-    # randomForest("hola","PCA_funtion",data)
-    # RN("hola","PCA_funtion",data)
+    # K_NN("t_student","PCA_funtion",data,True, 1)
+    # decisionTree("t_student","PCA_funtion",data, True, 1)
+    # svm("t_student","PCA_funtion",data,True, 1)    
+    # randomForest("t_student","PCA_funtion",data,True, 1)
+    # RN("t_student","PCA_funtion",data,True, 1)
 
 
 

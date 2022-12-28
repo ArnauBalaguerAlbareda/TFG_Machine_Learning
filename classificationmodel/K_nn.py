@@ -9,10 +9,14 @@ from sklearn.utils import resample
 from .seve_model import *
 
 
-def K_NN(t_student,PCA_funtion,nameMatrix):
+def K_NN( t_student, PCA_funtion, nameMatrix, graf, meth):
 
-    t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
-    PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
+    if(graf == False):
+        t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
+        PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
+    else:
+        t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) + '_t_student.csv')
+        PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) +'_PCA' + ".csv")
 
     x_t = t_student.iloc[:,1:t_student.shape[1]-1]
     y_t = t_student.iloc[:,t_student.shape[1]-1]

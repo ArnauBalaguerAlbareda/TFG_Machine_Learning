@@ -147,7 +147,7 @@ def t_student(nameMatrix, df, graf, meth):
 
 def PCA_funtion(nameMatrix, df, graf, meth):
     if(graf == False):range_atributs = 2887 
-    else: range_atributs= 76
+    else: range_atributs= 77
     
     x = df.iloc[:,1:range_atributs].values
     y = df.iloc[:,range_atributs].values

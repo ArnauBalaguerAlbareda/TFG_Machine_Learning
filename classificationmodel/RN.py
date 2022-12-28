@@ -11,10 +11,14 @@ import multiprocessing
 from sklearn.metrics import precision_score
 
 
-def RN(t_student,PCA_funtion,nameMatrix):
+def RN(t_student,PCA_funtion,nameMatrix, graf, meth):
 
-    t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
-    PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
+    if(graf == False):
+        t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
+        PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
+    else:
+        t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) + '_t_student.csv')
+        PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) +'_PCA' + ".csv")
 
     x_t = t_student.iloc[:,1:t_student.shape[1]-1]
     y_t = t_student.iloc[:,t_student.shape[1]-1]
@@ -51,8 +55,8 @@ def RN(t_student,PCA_funtion,nameMatrix):
     modelo_t = grid_t.best_estimator_
     print(modelo_t)
 
-    seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix)
-    seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix)
+    seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix, True, 1)
+    seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix, True, 1)  
 
 
     grid_PCA = RandomizedSearchCV(
@@ -79,5 +83,5 @@ def RN(t_student,PCA_funtion,nameMatrix):
     modelo_PCA = grid_PCA.best_estimator_
     print(modelo_PCA)
 
-    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','c',modelo_PCA,'RN',nameMatrix)
-    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','b',modelo_PCA,'RN',nameMatrix)
+    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','c',modelo_PCA,'RN',nameMatrix, True, 1)
+    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','b',modelo_PCA,'RN',nameMatrix, True, 1)
