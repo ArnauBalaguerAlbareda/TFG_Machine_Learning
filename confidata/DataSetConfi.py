@@ -63,11 +63,13 @@ def configuration_graf(data,meth):
         if meth == 1:
             r = G.degree(weight='weight')
         elif meth == 2:
-            r = nx.information_centrality(G,weight='weight')
+            r = strength(m)
         elif meth == 3:
             r = nx.betweenness_centrality(G,weight='weight')
         elif meth == 4:
             r = nx.closeness_centrality(G,distance="weight")
+        elif meth == 5:
+            r = nx.information_centrality(G,weight='weight')
         else:
             print('error')
             return
@@ -87,20 +89,11 @@ def configuration_graf(data,meth):
     print(df)
     df.to_csv("./data/"+ data + "/" + data + '_' + str(meth) + "_graph.csv")
 
-    # m = pd.read_csv("./data/"+ 'RS' + "/" + file(0) + ".csv",names=np.arange(76))
-    # a = pd.read_csv("./data/"+ 'RS' + "/" + file(5) + ".csv",names=np.arange(76))
-
-    # G = nx.from_numpy_matrix(m.to_numpy())
-    # A = nx.from_numpy_matrix(a.to_numpy())
-    # nx.draw(b, with_labels=True)
-    # b = nx.closeness_centrality(G,distance="weight")
-    # print(b)
-
 # metricas:
-# 	degree     print(A.degree(weight='weight'))
-# 	streng     print(nx.information_centrality(G,weight='weight'))
-# 	bitwines    print(nx.betweenness_centrality(G,weight='weight'))
-# 	closenes print(nx.closeness_centrality(G,distance="weight"))
+# 	degree
+# 	strength  
+# 	bitwines  
+# 	closenes
 
 
 def file(number):
@@ -111,3 +104,14 @@ def file(number):
             return("00"+ str(number))
         else:
             return("0"+ str(number))
+
+def strength(matrix):
+    l = []
+    for i in range(76):
+        sum = 0
+        for y in range(76):
+            if(i != y):
+                sum += matrix[i][y]
+        l.append(sum)
+    return l
+    

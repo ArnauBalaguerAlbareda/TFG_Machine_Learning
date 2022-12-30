@@ -16,7 +16,7 @@ def main():
 
     # Crate the max matrix
     configuration_matrix(data)
-    for i in range(1,5):
+    for i in range(1,6):
         configuration_graf(data,i)
 
     t_final = datetime.now()
@@ -26,7 +26,7 @@ def main():
     
     #Descrip the data base and crate the t_studen & PCA matrics
     datapreparation_matrix(data,False,0)
-    for i in range(1,5):
+    for i in range(1,6):
         datapreparation_matrix(data,True,i)
 
     #Entrenar modelos
