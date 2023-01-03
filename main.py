@@ -12,6 +12,7 @@ from classificationmodel.RN import *
 def main():
 
     data = 'RS'
+
     t_inicio  = datetime.now()
 
     # Crate the max matrix
@@ -25,9 +26,9 @@ def main():
     print(str(seconds) + "s")
     
     #Descrip the data base and crate the t_studen & PCA matrics
-    datapreparation_matrix(data,False,0)
+    datapreparation(data,False,0)
     for i in range(1,6):
-        datapreparation_matrix(data,True,i)
+        datapreparation(data,True,i)
 
     #Entrenar modelos
     K_NN("t_student","PCA_funtion",data,True, 1)

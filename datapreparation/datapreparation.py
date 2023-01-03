@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
 
-def datapreparation_matrix(nameMatrix,graf,meth):
+def datapreparation(nameMatrix,graf,meth):
     
     if(graf == False):
         df = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + ".csv")
@@ -48,6 +48,7 @@ def datapreparation_matrix(nameMatrix,graf,meth):
         print("---------------------- Remove useless columns ----------------------")
         df = remove_useless_columns(df)
         print(df)
+        
     else: df = pd.read_csv( "./data/"+ nameMatrix + "/" + nameMatrix + '_' + str(meth) + "_graph.csv")
 
     print("---------------------- t Student ----------------------")
@@ -60,11 +61,13 @@ def datapreparation_matrix(nameMatrix,graf,meth):
 def standard_deviation(nameMatrix):
     df_EM = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_EM' + ".csv" )
     df_SEM = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_SEM' + ".csv")
-    rang = np.arange(76*76+1)
+    rang = np.arange(76*76)
     df_D = pd.DataFrame()
 
     df_D["EM"] = list(df_EM.std(numeric_only=True))
     df_D["SEM"] = list(df_SEM.std(numeric_only=True))
+    df_D = df_D.drop([0],axis=0)
+
     diferencia = [e1 - e2 for e1, e2 in zip(df_D["EM"],df_D["SEM"])]
     df_D["Dif"] = diferencia
     df_D.to_excel("./data/"+ nameMatrix + "/" + nameMatrix + '_StandardDeviation.xlsx')
@@ -108,7 +111,7 @@ def t_student(nameMatrix, df, graf, meth):
     for i in range(0,range_atributs):
         a = df.loc[df.mstype == 0, str(i)]
         b = df.loc[df.mstype == -1, str(i)]
-        res = "{0:.6f}".format(pg.ttest(x=a, y=b, alternative='two-sided', correction=False)['p-val']['T-test'])
+        res = "{0:.6f}".format(pg.ttest(x=a, y=b, alternative='two-sided', correction=False )['p-val']['T-test'])
         if (res == 'nan'): pval_list.append(math.nan)
         else: 
             pval_list.append(res) 
