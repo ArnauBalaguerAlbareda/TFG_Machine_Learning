@@ -31,18 +31,18 @@ def main():
         datapreparation(data,True,i)
 
     #Entrenar modelos
-    K_NN("t_student","PCA_funtion",data,True, 1)
-    decisionTree("t_student","PCA_funtion",data, True, 1)
-    svm("t_student","PCA_funtion",data,True, 1)    
-    randomForest("t_student","PCA_funtion",data,True, 1)
-    RN("t_student","PCA_funtion",data,True, 1)
+    K_NN(data,False, 1)
+    decisionTree(data, False, 1)
+    svm(data,False, 1)    
+    randomForest(data,False, 1)
+    RN(data,False, 1)
 
     for i in range(1,5):
-        K_NN("t_student","PCA_funtion",data,True, i)
-        decisionTree("t_student","PCA_funtion",data, True, i)
-        svm("t_student","PCA_funtion",data,True, i)    
-        randomForest("t_student","PCA_funtion",data,True, i)
-        RN("t_student","PCA_funtion",data,True, i)
+        K_NN(data,True, i)
+        decisionTree(data, True, i)
+        svm(data,True, i)    
+        randomForest(data,True, i)
+        RN(data,True, i)
 
 
 if __name__ == '__main__':

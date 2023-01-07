@@ -4,10 +4,11 @@ import numpy as np
 
 from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
-from sklearn.metrics import precision_score, make_scorer
+from sklearn.metrics import precision_score, make_scorer,recall_score,accuracy_score,f1_score
 from sklearn.utils import resample
-from sklearn.metrics import accuracy_score,precision_score
 from .seve_model import *
+from sklearn import preprocessing
+
 
 def svm(nameMatrix, graf, meth):
     
@@ -27,15 +28,25 @@ def svm(nameMatrix, graf, meth):
 
     accuracy_t_c = []
     precision_t_c = []
+    recall_t_c = []
+    f1_t_c = []
+
     accuracy_t_b = []
     precision_t_b = []
+    recall_t_b = []
+    f1_t_b = []
+
 
     # cross validation -----------------
+    lb = preprocessing.LabelBinarizer()
+    y_t = lb.fit_transform(y_t)
     for n in range(1,30,1):
         svm = SVC(gamma = "auto", kernel = "rbf", C = n)
         accuracy_t_c.append(cross_val_score(svm, x_t, y_t, cv = 7, scoring='accuracy' ).mean())
-        precision = make_scorer(precision_score, pos_label=-1)
-        precision_t_c.append(cross_val_score(svm, x_t, y_t, cv = 7, scoring=precision).mean())
+        precision_t_c.append(cross_val_score(svm, x_t, y_t, cv = 7, scoring="precision").mean())
+        recall_t_c.append(cross_val_score(svm, x_t, y_t,scoring="recall", cv = 7).mean())
+        f1_t_c.append(cross_val_score(svm, x_t, y_t,scoring="f1", cv = 7).mean())
+
 
     # bootstrap ------------------------
     t_student_SEM = t_student.loc[t_student.loc[:,'mstype'] == 0]
@@ -47,8 +58,10 @@ def svm(nameMatrix, graf, meth):
     for n in range(1,30,1):
         accuracy_l = list()
         precision_l = list()
-        svm = SVC(gamma = "auto", kernel = "rbf", C = n)
+        recall_l = list()
+        f1_l = list()
 
+        svm = SVC(gamma = "auto", kernel = "rbf", C = n)
         for i in range(7):
             train_1 = resample(t_student_SEM.values , n_samples = n_size_SEM)
             train_2 = resample(t_student_EM.values , n_samples = n_size_EM)
@@ -58,18 +71,35 @@ def svm(nameMatrix, graf, meth):
             predictions = svm.predict(test[:,:-1])
             accuracy_l.append(accuracy_score(test[:,-1], predictions))
             precision_l.append(precision_score(test[:,-1], predictions,pos_label=-1))
+            recall_l.append(recall_score(test[:,-1], predictions,pos_label=-1))
+            f1_l.append(f1_score(test[:,-1], predictions,pos_label=-1))
+
         accuracy_t_b.append(np.mean(accuracy_l))
         precision_t_b.append(np.mean(precision_l))
+        recall_t_b = (np.mean(recall_l))
+        f1_t_b = (np.mean(f1_l))
 
-    pd.DataFrame(accuracy_t_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_accuracy_t_c.csv')
+
+    pd.DataFrame(accuracy_t_c) .to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_accuracy_t_c.csv')
     pd.DataFrame(precision_t_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_precision_t_c.csv')
+    pd.DataFrame(recall_t_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_recall_t_c.csv')
+    pd.DataFrame(f1_t_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_f1_t_c.csv')
+
     pd.DataFrame(accuracy_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_accuracy_t_b.csv')
     pd.DataFrame(precision_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_precision_t_b.csv')
+    pd.DataFrame(recall_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_recall_t_b.csv')
+    pd.DataFrame(f1_t_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_f1_t_b.csv')
 
     plt.plot(range(1,30,1), accuracy_t_c, label='Accuracy cross')
     plt.plot(range(1,30,1), precision_t_c, label='Precision cross')
+    plt.plot(range(1,30,1), recall_t_c, label='Recall cross')
+    plt.plot(range(1,30,1), f1_t_c, label='f1 cross')
+
     plt.plot(range(1,30,1), accuracy_t_b, label='Accuracy Bootstrap ')
     plt.plot(range(1,30,1), precision_t_b, label='Precision Bootstrap')
+    plt.plot(range(1,30,1), recall_t_b, label='Recall Bootstrap')
+    plt.plot(range(1,30,1), f1_t_b, label='f1 Bootstrap')
+
 
     plt.legend()
     plt.grid()
@@ -80,16 +110,24 @@ def svm(nameMatrix, graf, meth):
 
     accuracy_PCA_c = []
     precision_PCA_c = []
+    recall_PCA_c = []
+    f1_PCA_c = []
+
 
     accuracy_PCA_b = []
     precision_PCA_b = []
+    recall_PCA_b = []
+    f1_PCA_b = []
 
     # cross validation -----------------
+    lb = preprocessing.LabelBinarizer()
+    y_PCA = lb.fit_transform(y_PCA)
     for n in range(1,30,1):
         svm = SVC(gamma = "auto", kernel = "rbf", C = n)
         accuracy_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, cv = 7, scoring='accuracy').mean())
-        precision = make_scorer(precision_score, pos_label='MS')
-        precision_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, cv = 7, scoring=precision).mean())
+        precision_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, cv = 7, scoring="precision").mean())
+        recall_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, scoring="recall", cv = 7).mean())
+        f1_PCA_c.append(cross_val_score(svm, x_PCA, y_PCA, scoring="f1", cv = 7).mean())
 
     # bootstrap ------------------------
 
@@ -102,6 +140,9 @@ def svm(nameMatrix, graf, meth):
     for n in range(1,30,1):
         accuracy_l = list()
         precision_l = list()
+        recall_l = list()
+        f1_l = list()
+
         svm = SVC(gamma = "auto", kernel = "rbf", C = n)
 
         for i in range(7):
@@ -110,21 +151,37 @@ def svm(nameMatrix, graf, meth):
             train = np.concatenate((train_1,train_2))
             test = np.array([x for x in PCA_funtion.values if x.tolist() not in train.tolist()])
             svm.fit(train[:,:-1], train[:,-1])
-            predictions = svm.predict(test[:,:-1])
+            predictions.predict(test[:,:-1])
             accuracy_l.append(accuracy_score(test[:,-1], predictions))
             precision_l.append(precision_score(test[:,-1], predictions,pos_label='MS'))
+            recall_l.append(recall_score(test[:,-1], predictions,pos_label='MS'))
+            f1_l.append(f1_score(test[:,-1], predictions,pos_label='MS'))
+
         accuracy_PCA_b.append(np.mean(accuracy_l))
         precision_PCA_b.append(np.mean(precision_l))
+        recall_PCA_b.append(np.mean(recall_l))
+        f1_PCA_b.append(np.mean(f1_l))
 
     pd.DataFrame(accuracy_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_accuracy_PCA_c.csv')
     pd.DataFrame(precision_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_precision_PCA_c.csv')
+    pd.DataFrame(recall_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_recall_PCA_c.csv')
+    pd.DataFrame(f1_PCA_c).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_f1_PCA_c.csv')
+
     pd.DataFrame(accuracy_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_accuracy_PCA_b.csv')
     pd.DataFrame(precision_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_precision_PCA_b.csv')
+    pd.DataFrame(recall_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_recall_PCA_b.csv')
+    pd.DataFrame(f1_PCA_b).to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 'svm_f1_PCA_b.csv')
 
     plt.plot(range(1,30,1), accuracy_PCA_c, label='Accuracy cross')
     plt.plot(range(1,30,1), precision_PCA_c, label='Precision cross')
+    plt.plot(range(1,30,1), recall_PCA_c, label='Recall cross')
+    plt.plot(range(1,30,1), f1_PCA_c, label='f1 cross')
+
     plt.plot(range(1,30,1), accuracy_PCA_b, label='Accuracy Bootstrap')
     plt.plot(range(1,30,1), precision_PCA_b, label='Precision Bootstrap')
+    plt.plot(range(1,30,1), recall_PCA_b, label='Recall Bootstrap')
+    plt.plot(range(1,30,1), f1_PCA_b, label='F1 Bootstrap')
+
     plt.legend()
     plt.grid()
     plt.title('SVM Classifier whit PCA')

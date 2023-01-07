@@ -30,16 +30,16 @@ def datapreparation(nameMatrix,graf,meth):
 
         print ('---------------------------------')
         
-        print("---------------------- mstype distrivution ----------------------")
+        print("---------------------- mstype distribution ----------------------")
         sns.countplot(x = 'mstype',data=df)
         df['mstype'].value_counts()
         plt.show()
 
-        print("---------------------- 1,2,3 distrivution ----------------------")
+        print("---------------------- 1,2,3 distribution ----------------------")
         df [[ '1','2','3']] . hist ( figsize = ( 10 , 5 ))
         plt.show()
 
-        print("---------------------- Standard Deviation ----------------------")
+        print("---------------------- Standard Desviation ----------------------")
         standard_deviation(nameMatrix)
 
         print("---------------------- Correlation ----------------------")
