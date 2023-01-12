@@ -5,8 +5,7 @@ import numpy as np
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.utils import resample
-import joblib
-from sklearn.metrics import precision_score,accuracy_score
+from sklearn.metrics import precision_score,accuracy_score, recall_score ,f1_score
 
 def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, meth):
 
@@ -21,6 +20,9 @@ def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, met
         fold_size = n_samples // k
         scores_a = []
         scores_p = []
+        scores_r = []
+        scores_f1 = []
+
 
         masks = []
         for fold in range(k):
@@ -33,13 +35,22 @@ def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, met
             predictions = model.predict(X_test)
             scores_a.append(model.score(X_test, y_test))
             scores_p.append(precision_score(y_test, predictions,pos_label=label))
+            scores_r.append(recall_score(y_test, predictions,pos_label=label))
+            scores_f1.append(f1_score(y_test, predictions,pos_label=label))
+
         accuracy = np.mean(scores_a)
         precision = np.mean(scores_p)
+        recall = np.mean(scores_r)
+        f1 = np.mean(scores_f1)
+
+
         # if(graf == False):joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
         # else: joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + "_" + str(meth) + '.pkl')
     else:
         accuracy_l = list()
         precision_l = list()
+        recall_l = list()
+        f1_l = list()
 
         if(t_bd == 't'):
             t_student_SEM = bd.loc[bd.loc[:,'mstype'] == 0]
@@ -67,8 +78,14 @@ def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, met
             predictions = model.predict(test[:,:-1])
             accuracy_l.append(accuracy_score(test[:,-1], predictions))
             precision_l.append(precision_score(test[:,-1], predictions,pos_label=label))
+            recall_l.append(recall_score(test[:,-1], predictions,pos_label=label))
+            f1_l.append(recall_score(test[:,-1], predictions,pos_label=label))
+
         accuracy = np.mean(accuracy_l)
         precision = np.mean(precision_l)
+        recall = np.mean(recall_l)
+        f1 = np.mean(f1_l)
+
 
         # if(graf == False):joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + '.pkl')
         # else: joblib.dump(model,"./data/"+ nameMatrix + "/" + nameMatrix + 'model_' + name_model + "_" + str(meth) + '.pkl')

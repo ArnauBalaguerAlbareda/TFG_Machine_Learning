@@ -8,7 +8,8 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import cross_val_score
 from .seve_model import *
 import multiprocessing
-from sklearn.metrics import precision_score
+from sklearn import preprocessing
+
 
 
 def RN(nameMatrix, graf, meth):
@@ -22,10 +23,14 @@ def RN(nameMatrix, graf, meth):
 
     x_t = t_student.iloc[:,1:t_student.shape[1]-1]
     y_t = t_student.iloc[:,t_student.shape[1]-1]
+    lb = preprocessing.LabelBinarizer()
+    y_t = lb.fit_transform(y_t)
 
     x_PCA = PCA_funtion.iloc[:,1:PCA_funtion.shape[1]-1]
     y_PCA = PCA_funtion.iloc[:,PCA_funtion.shape[1]-1]
-
+    lb = preprocessing.LabelBinarizer()
+    y_PCA = lb.fit_transform(y_PCA)
+    
     param_distributions = {
         'hidden_layer_sizes': [(10), (10, 10), (20, 20)],
         'alpha': np.logspace(-3, 3, 7)
