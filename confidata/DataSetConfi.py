@@ -61,15 +61,13 @@ def configuration_graf(data,meth):
 
         row = []
         if meth == 1:
-            r = G.degree(weight='weight')
+            r = G.degree()
         elif meth == 2:
             r = strength(m)
         elif meth == 3:
             r = nx.betweenness_centrality(G,weight='weight')
         elif meth == 4:
             r = nx.closeness_centrality(G,distance="weight")
-        elif meth == 5:
-            r = nx.information_centrality(G,weight='weight')
         else:
             print('error')
             return
@@ -87,13 +85,7 @@ def configuration_graf(data,meth):
 
     df["mstype"] = list(res["mstype"])
     print(df)
-    df.to_csv("./data/"+ data + "/" + data + '_' + str(meth) + "_graph.csv")
-
-# metricas:
-# 	degree
-# 	strength  
-# 	bitwines  
-# 	closenes
+    # df.to_csv("./data/"+ data + "/" + data + '_' + str(meth) + "_graph.csv")
 
 
 def file(number):
