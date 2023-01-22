@@ -5,7 +5,6 @@ import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import RandomizedSearchCV
 
-from sklearn.model_selection import cross_val_score
 from .seve_model import *
 import multiprocessing
 from sklearn import preprocessing
@@ -18,18 +17,15 @@ def RN(nameMatrix, graf, meth):
         t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
         PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_PCA' + ".csv")
     else:
-        t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) + '_t_student.csv')
-        PCA_funtion = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) +'_PCA' + ".csv")
+        t_student = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + '_' + str(meth) + "_graph.csv")
 
+    ##
+    ## t_student
+    ##
     x_t = t_student.iloc[:,1:t_student.shape[1]-1]
     y_t = t_student.iloc[:,t_student.shape[1]-1]
     lb = preprocessing.LabelBinarizer()
     y_t = lb.fit_transform(y_t)
-
-    x_PCA = PCA_funtion.iloc[:,1:PCA_funtion.shape[1]-1]
-    y_PCA = PCA_funtion.iloc[:,PCA_funtion.shape[1]-1]
-    lb = preprocessing.LabelBinarizer()
-    y_PCA = lb.fit_transform(y_PCA)
     
     param_distributions = {
         'hidden_layer_sizes': [(10), (10, 10), (20, 20)],
@@ -59,34 +55,48 @@ def RN(nameMatrix, graf, meth):
 
     modelo_t = grid_t.best_estimator_
     print(modelo_t)
+    
+    if(graf == False):
+        seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix, False, 1)
+        seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix, False, 1)
+    else:
+        seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix, True, 1)
+        seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix, True, 1)
 
-    seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix, True, 1)
-    seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix, True, 1)  
+    
+    ##
+    ## PCA
+    ##
+    if(graf == False):
 
+        x_PCA = PCA_funtion.iloc[:,1:PCA_funtion.shape[1]-1]
+        y_PCA = PCA_funtion.iloc[:,PCA_funtion.shape[1]-1]
+        lb = preprocessing.LabelBinarizer()
+        y_PCA = lb.fit_transform(y_PCA)
 
-    grid_PCA = RandomizedSearchCV(
-        estimator  = MLPClassifier(solver = 'lbfgs', max_iter= 2000),
-        param_distributions = param_distributions,
-        n_iter     = 50, # Número máximo de combinaciones probadas
-        scoring    = 'accuracy',
-        n_jobs     = multiprocessing.cpu_count() - 1,
-        cv         = 3,
-        verbose    = 0,
-        random_state = 123,
-        return_train_score = True
-       )
+        grid_PCA = RandomizedSearchCV(
+            estimator  = MLPClassifier(solver = 'lbfgs', max_iter= 2000),
+            param_distributions = param_distributions,
+            n_iter     = 50, # Número máximo de combinaciones probadas
+            scoring    = 'accuracy',
+            n_jobs     = multiprocessing.cpu_count() - 1,
+            cv         = 3,
+            verbose    = 0,
+            random_state = 123,
+            return_train_score = True
+        )
 
-    grid_PCA.fit(X = x_PCA, y = y_PCA)
+        grid_PCA.fit(X = x_PCA, y = y_PCA)
 
-    resultados = pd.DataFrame(grid_PCA.cv_results_)
-    print(resultados.filter(regex = '(param.*|mean_t|std_t)')\
-        .drop(columns = 'params')\
-        .sort_values('mean_test_score', ascending = False)\
-        .head(10)
-    )
+        resultados = pd.DataFrame(grid_PCA.cv_results_)
+        print(resultados.filter(regex = '(param.*|mean_t|std_t)')\
+            .drop(columns = 'params')\
+            .sort_values('mean_test_score', ascending = False)\
+            .head(10)
+        )
 
-    modelo_PCA = grid_PCA.best_estimator_
-    print(modelo_PCA)
+        modelo_PCA = grid_PCA.best_estimator_
+        print(modelo_PCA)
 
-    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','c',modelo_PCA,'RN',nameMatrix, True, 1)
-    seve_model(x_PCA,y_PCA,PCA_funtion,'pca','b',modelo_PCA,'RN',nameMatrix, True, 1)
+        seve_model(x_PCA,y_PCA,PCA_funtion,'pca','c',modelo_PCA,'RN',nameMatrix, False, 1)
+        seve_model(x_PCA,y_PCA,PCA_funtion,'pca','b',modelo_PCA,'RN',nameMatrix, False, 1)

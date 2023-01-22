@@ -85,7 +85,7 @@ def configuration_graf(data,meth):
 
     df["mstype"] = list(res["mstype"])
     print(df)
-    # df.to_csv("./data/"+ data + "/" + data + '_' + str(meth) + "_graph.csv")
+    df.to_csv("./data/"+ data + "/" + data + '_' + str(meth) + "_graph.csv")
 
 
 def file(number):

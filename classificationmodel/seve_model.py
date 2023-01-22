@@ -10,9 +10,9 @@ from sklearn.metrics import precision_score,accuracy_score, recall_score ,f1_sco
 def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, meth):
 
     if(t_bd == 't'):
-        label = -1
+        label= 0
     else:
-        label = 'MS'
+        label=1
 
     if(t_trin == 'c'):
         k = 7
@@ -34,7 +34,7 @@ def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, met
             model.fit(X_train, y_train)
             predictions = model.predict(X_test)
             scores_a.append(model.score(X_test, y_test))
-            scores_p.append(precision_score(y_test, predictions,pos_label=label))
+            scores_p.append(precision_score(y_test, predictions ,pos_label=label))
             scores_r.append(recall_score(y_test, predictions,pos_label=label))
             scores_f1.append(f1_score(y_test, predictions,pos_label=label))
 
@@ -57,11 +57,13 @@ def seve_model( x, y, bd, t_bd, t_trin, model, name_model, nameMatrix, graf, met
             t_student_EM = bd.loc[bd.loc[:,'mstype'] == -1]
             n_size_SEM = int(len(t_student_SEM) * 0.632)
             n_size_EM = int(len(t_student_EM) * 0.632)
+            label=-1
         else:
             PCA_SEM = bd.loc[bd.loc[:,'mstype'] == 'HV']
             PCA_EM = bd.loc[bd.loc[:,'mstype'] == 'MS']
             n_size_SEM = int(len(PCA_SEM) * 0.632)
             n_size_EM = int(len(PCA_EM) * 0.632)
+            label='MS'
 
         for i in range(7):
             if(t_bd == 't'): 

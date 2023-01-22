@@ -15,7 +15,11 @@ def datapreparation(nameMatrix,graf,meth):
     if(graf == False):
         df = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix + ".csv")
         print(df)
-        
+
+        print("---------------------- Remove useless columns ----------------------")
+        df = remove_useless_columns(df)
+        print(df)
+
         print ('Total fields for each entry:', df.shape [ 1 ])
         print ('Total de entradas:', df.shape [ 0 ])
         print ('---------------------------------')
@@ -44,10 +48,6 @@ def datapreparation(nameMatrix,graf,meth):
 
         print("---------------------- Correlation ----------------------")
         correlation(nameMatrix, df)
-
-        print("---------------------- Remove useless columns ----------------------")
-        df = remove_useless_columns(df)
-        print(df)
         
     else: df = pd.read_csv( "./data/"+ nameMatrix + "/" + nameMatrix + '_' + str(meth) + "_graph.csv")
 
@@ -61,7 +61,9 @@ def datapreparation(nameMatrix,graf,meth):
 def standard_deviation(nameMatrix):
     df_EM = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_EM' + ".csv" )
     df_SEM = pd.read_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_SEM' + ".csv")
-    rang = np.arange(76*76)
+    df_EM = remove_useless_columns(df_EM)
+    df_SEM = remove_useless_columns(df_SEM)
+    rang = np.arange(2888)
     df_D = pd.DataFrame()
 
     df_D["EM"] = list(df_EM.std(numeric_only=True))
@@ -87,17 +89,11 @@ def correlation(nameMatrix, df):
     sns.heatmap(winner,center = 0)
     plt.show()
 
-    correlation_list=[]
-    for i in range(76): correlation_list.append(0)
-    for i in range(76*76):
-        if np.isnan(correlation['mstype'][i]) : correlation_list[i//76]+=1
-
-    print (correlation_list)
 
 
 def remove_useless_columns(df):
     df = df.drop(
-        df.iloc[:,2888:5777].columns,axis=1
+        df.iloc[:,2889:5777].columns,axis=1
     )
     return df
 
@@ -130,6 +126,7 @@ def t_student(nameMatrix, df, graf, meth):
     if(graf == False):df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix + 't_student.csv')
     else: df_t.to_csv("./data/"+ nameMatrix + "/" + nameMatrix +'_'+ str(meth) + '_t_student.csv')
 
+    # plots t_studen 4 primeros y 4 ultimos
     # print("--- 4r ---")
     # for i in range(0,4):
     #     sns.boxplot(x = df['mstype'],
@@ -149,7 +146,7 @@ def t_student(nameMatrix, df, graf, meth):
 
 
 def PCA_funtion(nameMatrix, df, graf, meth):
-    if(graf == False):range_atributs = 2887 
+    if(graf == False):range_atributs = 2889
     else: range_atributs= 77
     
     x = df.iloc[:,1:range_atributs].values
