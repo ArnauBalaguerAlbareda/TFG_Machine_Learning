@@ -12,29 +12,29 @@ def main():
 
     data = 'RS'
 
-    # # Crate the max matrix
-    # configuration_matrix(data)
-    # for i in range(1,5):
-    #     configuration_graf(data,i)
+    # Crate the max matrix
+    configuration_matrix(data)
+    for i in range(1,5):
+        configuration_graf(data,i)
 
-    # # # Descrip the data base and crate the t_studen & PCA matrics
-    # datapreparation(data,False,0)
-    # for i in range(1,5):
-    #     datapreparation(data,True,i)
+    # Descrip the data base and crate the t_studen & PCA matrics
+    datapreparation(data,False,0)
+    for i in range(1,5):
+        datapreparation(data,True,i)
 
-    # # #Entrenar modelos
-    # K_NN(data,False, 1)
-    # decisionTree(data, False, 1)
+    # #Entrenar modelos
+    K_NN(data,False, 1)
+    decisionTree(data, False, 1)
     svm(data,False, 1)    
-    # randomForest(data,False, 1)
-    # RN(data,False, 1)
+    randomForest(data,False, 1)
+    RN(data,False, 1)
 
     for i in range(1,5):
-    #     K_NN(data,True, i)
-    #     decisionTree(data, True, i)
-    #     svm(data,True, i)    
+        K_NN(data,True, i)
+        decisionTree(data, True, i)
+        svm(data,True, i)    
         randomForest(data,True, i)
-        # RN(data,True, i)
+        RN(data,True, i)
 
 
 if __name__ == '__main__':
