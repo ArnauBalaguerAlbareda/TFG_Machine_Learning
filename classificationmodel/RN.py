@@ -36,7 +36,7 @@ def RN(nameMatrix, graf, meth):
         estimator  = MLPClassifier(solver = 'lbfgs', max_iter= 2000),
         param_distributions = param_distributions,
         n_iter     = 50, # Número máximo de combinaciones probadas
-        scoring    = 'accuracy',
+        scoring    = 'precision',
         n_jobs     = multiprocessing.cpu_count() - 1,
         cv         = 3,
         verbose    = 0,
@@ -57,11 +57,9 @@ def RN(nameMatrix, graf, meth):
     print(modelo_t)
     
     if(graf == False):
-        seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix, False, 1)
-        seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix, False, 1)
+        seve_model(x_t,y_t,modelo_t,'RN',nameMatrix, False, 1)
     else:
-        seve_model(x_t,y_t,t_student,'t','c',modelo_t,'RN',nameMatrix, True, 1)
-        seve_model(x_t,y_t,t_student,'t','b',modelo_t,'RN',nameMatrix, True, 1)
+        seve_model(x_t,y_t,modelo_t,'RN',nameMatrix, True, 1)
 
     
     ##
@@ -78,7 +76,7 @@ def RN(nameMatrix, graf, meth):
             estimator  = MLPClassifier(solver = 'lbfgs', max_iter= 2000),
             param_distributions = param_distributions,
             n_iter     = 50, # Número máximo de combinaciones probadas
-            scoring    = 'accuracy',
+            scoring    = 'precision',
             n_jobs     = multiprocessing.cpu_count() - 1,
             cv         = 3,
             verbose    = 0,
@@ -98,5 +96,4 @@ def RN(nameMatrix, graf, meth):
         modelo_PCA = grid_PCA.best_estimator_
         print(modelo_PCA)
 
-        seve_model(x_PCA,y_PCA,PCA_funtion,'pca','c',modelo_PCA,'RN',nameMatrix, False, 1)
-        seve_model(x_PCA,y_PCA,PCA_funtion,'pca','b',modelo_PCA,'RN',nameMatrix, False, 1)
+        seve_model(x_PCA,y_PCA,modelo_PCA,'RN',nameMatrix, False, 1)
